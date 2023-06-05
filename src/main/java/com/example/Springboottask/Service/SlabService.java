@@ -27,7 +27,7 @@ public class SlabService {
     public void addSlab(int adminId,SlabDTO slabDTO) {
         if(adminRepository.existsById(adminId)){
             Slab slab = new Slab();
-            slab.setSlabId(slabDTO.getSlabId());
+//            slab.setSlabId(slabDTO.getSlabId());
             slab.setMinunit(slabDTO.getMinunit());
             slab.setMaxunit(slabDTO.getMaxunit());
             slab.setPrice(slabDTO.getPrice());

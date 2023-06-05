@@ -44,6 +44,12 @@ public class CustomerService {
     }
 
     public Customer updateCustomer(Integer customerId, CustomerDTO customerDTO) {
+
+//        Customer newCustomer = Customer.builder()
+//                .name(customerDTO.getName())
+//                .phno(customerDTO.getPhno())
+//                .email()
+//                .build();
         Customer ExistingCustomer = customerRepository.findById(customerId).get();
         ExistingCustomer.setName(customerDTO.getName());
         ExistingCustomer.setPhno(customerDTO.getPhno());

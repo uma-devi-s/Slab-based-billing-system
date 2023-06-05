@@ -1,6 +1,7 @@
 package com.example.Springboottask.Service;
 
 import com.example.Springboottask.Entity.BillEntity;
+import com.example.Springboottask.Entity.Slab;
 import com.example.Springboottask.Repository.AdminRepository;
 import com.example.Springboottask.Repository.BillRepository;
 import com.example.Springboottask.Repository.ConsumptionRepository;
@@ -26,27 +27,37 @@ public class BillService {
         Integer previousConsumption = consumptionRepository.findPreviousConsumption(customer_id);
         Double currentConsumption = TotalConsumption - previousConsumption;
         Double TotalBill = 0.0;
-        int first_count = 0;
-        List<Object[]> slabList = slabRepository.SlabList();
-
-        for (Object[] slabData : slabList){
-            Integer minUnit = (Integer) slabData[0];
-            Integer maxUnit = (Integer) slabData[1];
-            Double price = (Double) slabData[2];
-            first_count += 1;
-            if(currentConsumption>=minUnit && currentConsumption<=maxUnit){
-                Double consumption = currentConsumption-minUnit;
-                TotalBill = TotalBill + (consumption * price);
+//        int first_count = 0;
+        List<Slab> slabs = slabRepository.findAll();
+        for(Slab slab : slabs ){
+            if(currentConsumption - slab.getMaxunit() > 0){
+                TotalBill = (slab.getMaxunit() - slab.getMinunit()) * slab.getPrice();
+            }
+            else{
+                TotalBill = TotalBill+(currentConsumption - slab.getMinunit()) * slab.getPrice();
                 break;
             }
         }
-        List<Object[]> slabPriceList = slabRepository.SlabPriceList();
-        for(int i = 1; i< first_count; i++){
-            Object[] slabData = slabPriceList.get(i-1);
-            Integer maxUnit = (Integer) slabData[0];
-            Double price = (Double) slabData[1];
-            TotalBill = TotalBill+(maxUnit * price);
-        }
+//        List<Object[]> slabList = slabRepository.SlabList();
+//
+//        for (Object[] slabData : slabList){
+//            Integer minUnit = (Integer) slabData[0];
+//            Integer maxUnit = (Integer) slabData[1];
+//            Double price = (Double) slabData[2];
+//            first_count += 1;
+//            if(currentConsumption>=minUnit && currentConsumption<=maxUnit){
+//                Double consumption = currentConsumption-minUnit;
+//                TotalBill = TotalBill + (consumption * price);
+//                break;
+//            }
+//        }
+//        List<Object[]> slabPriceList = slabRepository.SlabPriceList();
+//        for(int i = 1; i< first_count; i++){
+//            Object[] slabData = slabPriceList.get(i-1);
+//            Integer maxUnit = (Integer) slabData[0];
+//            Double price = (Double) slabData[1];
+//            TotalBill = TotalBill+(maxUnit * price);
+//        }
         addBill(customer_id,currentConsumption,TotalBill);
         return "Bill updated";
     }

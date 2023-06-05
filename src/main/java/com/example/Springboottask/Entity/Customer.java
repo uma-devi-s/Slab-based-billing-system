@@ -3,6 +3,7 @@ package com.example.Springboottask.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.*;
@@ -11,6 +12,7 @@ import java.util.*;
 @Entity
 @Data
 @Table(name = "Customer")
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Customer {
