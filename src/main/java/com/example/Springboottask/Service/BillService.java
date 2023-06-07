@@ -26,9 +26,17 @@ public class BillService {
     public String BillCalculation(Integer customer_id,Double TotalConsumption){
         Integer previousConsumption = consumptionRepository.findPreviousConsumption(customer_id);
         Double currentConsumption = TotalConsumption - previousConsumption;
-        Double TotalBill = 0.0;
-//        int first_count = 0;
+
+//
         List<Slab> slabs = slabRepository.findAll();
+        Double totalBill = slabs.stream()
+                            .filter(n->n.getMinunit()<currentConsumption)
+                            .mapToDouble(bill-> (Math.min(currentConsumption,bill.getMaxunit()) - bill.getMinunit()) * bill.getPrice())
+                            .sum();
+
+
+
+        /***********************************************************************************
         for(Slab slab : slabs ){
             if(currentConsumption - slab.getMaxunit() > 0){
                 TotalBill = (slab.getMaxunit() - slab.getMinunit()) * slab.getPrice();
@@ -38,6 +46,8 @@ public class BillService {
                 break;
             }
         }
+         ***********************************************************************************/
+//        int first_count = 0;
 //        List<Object[]> slabList = slabRepository.SlabList();
 //
 //        for (Object[] slabData : slabList){
@@ -58,7 +68,7 @@ public class BillService {
 //            Double price = (Double) slabData[1];
 //            TotalBill = TotalBill+(maxUnit * price);
 //        }
-        addBill(customer_id,currentConsumption,TotalBill);
+        addBill(customer_id,currentConsumption,totalBill);
         return "Bill updated";
     }
 
