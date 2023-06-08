@@ -27,10 +27,17 @@ public class ConsumptionService {
     public void addConsumption(ConsumptionDTO consumptionDTO, int adminId) {
         if(adminRepository.existsById(adminId)) {
             Consumption consumption = new Consumption();
-            consumption.setCustomerId(consumptionDTO.getCustomerId());
-            consumption.setTotalConsumption(consumptionDTO.getTotalConsumption());
-            consumptionRepository.save(consumption);
-            bill.BillCalculation(consumption.getCustomerId(),consumption.getTotalConsumption());
+            Consumption addConsumption =Consumption.builder()
+                    .customerId(consumptionDTO.getCustomerId())
+                    .TotalConsumption(consumptionDTO.getTotalConsumption())
+                    .billDate(consumption.getBillDate())
+                    .build();
+
+
+//            consumption.setCustomerId(consumptionDTO.getCustomerId());
+//            consumption.setTotalConsumption(consumptionDTO.getTotalConsumption());
+            consumptionRepository.save(addConsumption);
+            bill.BillCalculation(addConsumption.getCustomerId(),addConsumption.getTotalConsumption());
         }
     }
 }

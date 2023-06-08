@@ -6,12 +6,14 @@ import com.example.Springboottask.Repository.AdminRepository;
 import com.example.Springboottask.Repository.BillRepository;
 import com.example.Springboottask.Repository.ConsumptionRepository;
 import com.example.Springboottask.Repository.SlabRepository;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@Builder
 public class BillService {
     @Autowired
     private ConsumptionRepository consumptionRepository;
@@ -75,11 +77,17 @@ public class BillService {
 
     public void addBill(Integer customerId, Double currentConsumption, Double billAmt) {
         BillEntity billEntity = new BillEntity();
-        billEntity.setCustomerId(customerId);
-        billEntity.setBillDate(billEntity.getBillDate());
-        billEntity.setBillAmt(billAmt);
-        billEntity.setCurrentConsumption(currentConsumption);
-        billRepository.save(billEntity);
+        BillEntity addBill = BillEntity.builder()
+                .customerId(customerId)
+                .billDate(billEntity.getBillDate())
+                .billAmt(billAmt)
+                .currentConsumption(currentConsumption)
+                .build();
+//        billEntity.setCustomerId(customerId);
+//        billEntity.setBillDate(billEntity.getBillDate());
+//        billEntity.setBillAmt(billAmt);
+//        billEntity.setCurrentConsumption(currentConsumption);
+        billRepository.save(addBill);
     }
 
     public List<BillEntity> getAllBill(Integer adminId) {

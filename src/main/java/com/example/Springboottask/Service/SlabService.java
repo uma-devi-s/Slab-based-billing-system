@@ -26,11 +26,14 @@ public class SlabService {
 
     public void addSlab(int adminId,SlabDTO slabDTO) {
         if(adminRepository.existsById(adminId)){
-            Slab slab = new Slab();
-//            slab.setSlabId(slabDTO.getSlabId());
-            slab.setMinunit(slabDTO.getMinunit());
-            slab.setMaxunit(slabDTO.getMaxunit());
-            slab.setPrice(slabDTO.getPrice());
+            Slab slab = Slab.builder()
+                    .minunit(slabDTO.getMinunit())
+                    .maxunit(slabDTO.getMaxunit())
+                    .price(slabDTO.getPrice()).build();
+
+//            slab.setMinunit(slabDTO.getMinunit());
+//            slab.setMaxunit(slabDTO.getMaxunit());
+//            slab.setPrice(slabDTO.getPrice());
             slabRepository.save(slab);
         }
 
@@ -40,10 +43,15 @@ public class SlabService {
 
         if(adminRepository.existsById(admin.getAdminId())){
             Slab existingSlab = slabRepository.findById(slabId).get();
-            existingSlab.setMinunit(slabDTO.getMinunit());
-            existingSlab.setMaxunit(slabDTO.getMaxunit());
-            existingSlab.setPrice(slabDTO.getPrice());
-            slabRepository.save(existingSlab);
+            Slab updateSlab = existingSlab.builder()
+                    .minunit(slabDTO.getMinunit())
+                    .maxunit(slabDTO.getMaxunit())
+                    .price(slabDTO.getPrice())
+                    .build();
+//            existingSlab.setMinunit(slabDTO.getMinunit());
+//            existingSlab.setMaxunit(slabDTO.getMaxunit());
+//            existingSlab.setPrice(slabDTO.getPrice());
+            slabRepository.save(updateSlab);
         }
     }
 
